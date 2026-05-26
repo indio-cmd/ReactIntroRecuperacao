@@ -1,29 +1,45 @@
+import { useEffect, useState } from 'react';
 import './style.css'
+import { getCharacters } from '../../api/rickAndMorty';
+import Card from '../../Components/Card';
 
 function Home() {
-return(
+   const [carregando, setCarregando] = useState(true);
+   const [personagens, setPersonagens] = useState([]);
 
-   <>
-   
-<h2>Boas vindas ao meu projeto</h2>
+   useEffect(() => {
 
-<p>Projeot bom</p>
-<b /> 
+      async function carregar() {
+         const dados = await getCharacters()
+         setPersonagens(dados)
+         setCarregando(false)
+      }
 
-<p>
-Main:Browsrouter 
-app.jsx:Linkar as páginas
-OperacoesBasicas:Somar,dividir,multiplicar,diminuir
-LocaisMundo:Onde eu sempre sonhei em ir 
-Header:Oque vai ficar na tela inicial e nao vai sumir 
-Footer:O que vai ficar la em baixo 
-pages: vão ser minhas paginas
-Home: vai ser oque vai ter na minha tela inicial
+      // variavel = [ ] espaço da mem
+      //array   = [  |  |  |  ]
+      //           0| 1| 2
+      carregar()
+   }, [])
 
-</p>
+   if (carregando) {
+      return (<>carregando ... </>
 
+      )
+   }
 
-   </> 
-)
+   return (
+      // Loading - existe quando requisita  algo para algo externo
+      <div>
+         <h2 className='titulo-lista'>Personagens - Rick and mory</h2>
+
+         <div className='lista-personagens' >
+        {personagens.map((personagem) => (
+          <Card personagem={personagem} />
+
+        ))}
+         </div>
+
+      </div>
+   )
 }
 export default Home 
